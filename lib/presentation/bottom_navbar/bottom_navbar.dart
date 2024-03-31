@@ -27,7 +27,7 @@ class BottomNavBar extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => HomeBloc(),
+          create: (context) => HomeBloc()..add(FetchTransactions()),
         ),
         BlocProvider(
           create: (context) => MoneyBloc()..add(FetchMoney()),

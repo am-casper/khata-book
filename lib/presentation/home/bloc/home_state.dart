@@ -1,10 +1,21 @@
 part of 'home_bloc.dart';
 
-sealed class HomeState extends Equatable {
+abstract class HomeState extends Equatable {
   const HomeState();
   
   @override
   List<Object> get props => [];
 }
 
-final class HomeInitial extends HomeState {}
+class HomeInitial extends HomeState {}
+
+class HomeLoading extends HomeState {}
+
+class TransactionsFetched extends HomeState {
+  final List<Map<String,dynamic>> transactions;
+
+  const TransactionsFetched({required this.transactions});
+
+  @override
+  List<Object> get props => [transactions];
+}
