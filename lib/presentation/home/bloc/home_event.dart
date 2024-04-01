@@ -8,3 +8,9 @@ abstract class HomeEvent extends Equatable {
 }
 
 class FetchTransactions extends HomeEvent {}
+
+class TabSwitched extends HomeEvent {
+  final bool isCustomersTabActive;
+
+  const TabSwitched({required this.isCustomersTabActive});
+}

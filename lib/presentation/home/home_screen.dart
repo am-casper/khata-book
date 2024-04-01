@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,14 +10,113 @@ import 'package:khata_book/presentation/home/bloc/home_bloc.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  Widget custSuppl(bool isCustomersTabActive) {
+    if (isCustomersTabActive) {
+      return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    "You'll Give",
+                    style: GoogleFonts.lexend(
+                        fontSize: 16.toAutoScaledFont,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "₹ 380",
+                    style: GoogleFonts.anekLatin(
+                        fontSize: 30.toAutoScaledFont,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xff8C8C8C)),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    "You'll Recieve",
+                    style: GoogleFonts.lexend(
+                        fontSize: 16.toAutoScaledFont,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "₹ 1180",
+                    style: GoogleFonts.anekLatin(
+                        fontSize: 30.toAutoScaledFont,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xff72CC00)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Text(
+            "A total of ₹ 800 will be recieved.",
+            style: GoogleFonts.anekLatin(
+              fontSize: 14.toAutoScaledFont,
+              fontWeight: FontWeight.normal,
+              color: const Color(0xff8C8C8C),
+            ),
+          ),
+          TextButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              backgroundColor: const Color(0xff388B40),
+            ),
+            onPressed: () {},
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "View Report",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.lexend(
+                      fontSize: 17.toAutoScaledFont,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white),
+                ),
+                const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                )
+              ],
+            ),
+          ),
+          SizedBox(height: 15.toAutoScaledHeight),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset('assets/icons/home/book.svg'),
+              SizedBox(width: 5.toAutoScaledWidth),
+              Text(
+                "Open Cashbook",
+                style: GoogleFonts.lexend(
+                    fontSize: 17.toAutoScaledFont,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xff388B40)),
+              ),
+            ],
+          ),
+        ],
+      );
+    } else {
+      return const Text("Suppliers");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // bool loading = true;
     return BlocConsumer<HomeBloc, HomeState>(
       listener: (context, state) {
         // TODO: implement listener
       },
       builder: (context, state) {
-        if (state is TransactionsFetched) {
+        if (!state.loading && !state.error) {
           return SafeArea(
             child: Scaffold(
               floatingActionButton: FloatingActionButton(
@@ -66,175 +163,120 @@ class HomeScreen extends StatelessWidget {
                           SvgPicture.asset('assets/icons/home/calender.svg'),
                         ],
                       ),
-                      SizedBox(height: 25.toAutoScaledHeight),
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(20)),
+                      SizedBox(height: 10.toAutoScaledHeight),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 290.toAutoScaledHeight,
+                        child: Stack(
+                          children: [
+                            
+                            Positioned(
+                              top: 44,
+                              width: 390.toAutoScaledWidth,
+                              child: Container(
+                                margin: EdgeInsets.zero,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: const BorderRadius.only(
+                                        bottomRight: Radius.circular(20),
+                                        topRight: Radius.circular(20),
+                                        bottomLeft: Radius.circular(20)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey.withOpacity(0.4),
+                                          spreadRadius: 0.5,
+                                          blurRadius: 5,
+                                          offset: const Offset(0, 0))
+                                    ]),
+                                padding: EdgeInsets.fromLTRB(
+                                    10.toAutoScaledWidth,
+                                    32.toAutoScaledHeight,
+                                    10.toAutoScaledWidth,
+                                    14.toAutoScaledHeight),
+                                child: Center(
+                                  child: custSuppl(state.isCustomersTabActive),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 109,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                            bottomLeft: Radius.circular(20))),
+                                    backgroundColor: state.isCustomersTabActive
+                                        ? const Color(0xff388B40)
+                                        : Colors.white,
+                                    foregroundColor: state.isCustomersTabActive
+                                        ? Colors.white
+                                        : Colors.black),
+                                onPressed: () {
+                                  context.read<HomeBloc>().add(const TabSwitched(isCustomersTabActive: false));
+                                },
+                                child: Text(
+                                  "Suppliers",
+                                  style: GoogleFonts.lexend(
+                                    fontSize: 18.toAutoScaledFont,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 111,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                    bottomLeft: Radius.zero,
+                                    bottomRight: Radius.circular(20)),
                                 boxShadow: [
                                   BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      // spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 3))
-                                ]),
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                  shadowColor: Colors.grey.withOpacity(0.5),
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                          bottomRight: Radius.circular(20))),
-                                  backgroundColor: Colors.white,
-                                  foregroundColor: Colors.black),
-                              onPressed: () {},
-                              child: Text(
-                                "Customers",
-                                style: GoogleFonts.lexend(
-                                    fontSize: 18.toAutoScaledFont),
-                              ),
-                            ),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                        bottomLeft: Radius.circular(20))),
-                                backgroundColor: const Color(0xff388B40),
-                                foregroundColor: Colors.white),
-                            onPressed: () {},
-                            child: Text(
-                              "Suppliers",
-                              style: GoogleFonts.lexend(
-                                fontSize: 18.toAutoScaledFont,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        margin: EdgeInsets.zero,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomLeft: Radius.circular(20)),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 3))
-                            ]),
-                        padding: EdgeInsets.fromLTRB(
-                            10.toAutoScaledWidth,
-                            32.toAutoScaledHeight,
-                            10.toAutoScaledWidth,
-                            14.toAutoScaledHeight),
-                        child: Center(
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "You'll Give",
-                                        style: GoogleFonts.lexend(
-                                            fontSize: 16.toAutoScaledFont,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "₹ 380",
-                                        style: GoogleFonts.anekLatin(
-                                            fontSize: 30.toAutoScaledFont,
-                                            fontWeight: FontWeight.w600,
-                                            color: const Color(0xff8C8C8C)),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "You'll Recieve",
-                                        style: GoogleFonts.lexend(
-                                            fontSize: 16.toAutoScaledFont,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "₹ 1180",
-                                        style: GoogleFonts.anekLatin(
-                                            fontSize: 30.toAutoScaledFont,
-                                            fontWeight: FontWeight.w600,
-                                            color: const Color(0xff72CC00)),
-                                      ),
-                                    ],
-                                  ),
+                                      color: Colors.grey.withOpacity(0.1),
+                                      spreadRadius: -2,
+                                      blurRadius: 2,
+                                      offset: const Offset(-5, -3))
                                 ],
                               ),
-                              Text(
-                                "A total of ₹ 800 will be recieved.",
-                                style: GoogleFonts.anekLatin(
-                                  fontSize: 14.toAutoScaledFont,
-                                  fontWeight: FontWeight.normal,
-                                  color: const Color(0xff8C8C8C),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                            bottomRight: Radius.circular(20))),
+                                    backgroundColor: state.isCustomersTabActive
+                                        ? Colors.white
+                                        : const Color(0xFF388B40),
+                                    foregroundColor: state.isCustomersTabActive
+                                        ? Colors.black
+                                        : Colors.white),
+                                onPressed: () {
+                                  context.read<HomeBloc>().add(const TabSwitched(isCustomersTabActive: true));
+                                },
+                                child: Text(
+                                  "Customers",
+                                  style: GoogleFonts.lexend(
+                                      fontSize: 18.toAutoScaledFont),
                                 ),
                               ),
-                              TextButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  backgroundColor: const Color(0xff388B40),
-                                ),
-                                onPressed: () {},
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "View Report",
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.lexend(
-                                          fontSize: 17.toAutoScaledFont,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white),
-                                    ),
-                                    const Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.white,
-                                    )
-                                  ],
-                                ),
+                            ),
+                            Positioned(
+                              left: 91,
+                              top: 4,
+                              child: SvgPicture.asset(
+                                "assets/icons/home/button.svg",
+                                height: 40,
                               ),
-                              SizedBox(height: 15.toAutoScaledHeight),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                      'assets/icons/home/book.svg'),
-                                  SizedBox(width: 5.toAutoScaledWidth),
-                                  Text(
-                                    "Open Cashbook",
-                                    style: GoogleFonts.lexend(
-                                        fontSize: 17.toAutoScaledFont,
-                                        fontWeight: FontWeight.w400,
-                                        color: const Color(0xff388B40)),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                            
+                          ],
                         ),
                       ),
-                      SizedBox(height: 25.toAutoScaledHeight),
+                      SizedBox(height: 10.toAutoScaledHeight),
                       TextField(
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.all(10),
@@ -320,26 +362,37 @@ class HomeScreen extends StatelessWidget {
                                             'assets/icons/home/whatsapp.svg'),
                                         SizedBox(width: 13.toAutoScaledWidth),
                                         SizedBox(
-                                          width: 67.37.toAutoScaledWidth,
+                                          width: 70.toAutoScaledWidth,
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
                                             children: [
                                               Text(
                                                 "₹ ${state.transactions[index]['amount'].abs()}",
                                                 style: GoogleFonts.lexendDeca(
-                                                    fontSize: 16.toAutoScaledFont,
+                                                    fontSize:
+                                                        16.toAutoScaledFont,
                                                     fontWeight: FontWeight.w500,
-                                                    color:
-                                          
-                                                    state.transactions[index]['amount']>0?const Color(0xff72CC00):
-                                                        const Color(0xFFFF2B2B)),
+                                                    color: state.transactions[
+                                                                    index]
+                                                                ['amount'] >
+                                                            0
+                                                        ? const Color(
+                                                            0xff72CC00)
+                                                        : const Color(
+                                                            0xFFFF2B2B)),
                                               ),
                                               Text(
-                                                state.transactions[index]['amount']>0?"You'll Get":"You'll Give",
+                                                state.transactions[index]
+                                                            ['amount'] >
+                                                        0
+                                                    ? "You'll Get"
+                                                    : "You'll Give",
                                                 style: GoogleFonts.lexendDeca(
                                                   fontSize: 14.toAutoScaledFont,
                                                   fontWeight: FontWeight.w300,
-                                                  color: const Color(0xff8C8C8C),
+                                                  color:
+                                                      const Color(0xff8C8C8C),
                                                 ),
                                               ),
                                             ],
