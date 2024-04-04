@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:khata_book/data/services/local/local_storage_service.dart';
 import 'package:khata_book/domain/models/transaction/transaction_list.dart';
 import 'package:khata_book/domain/repositories/transaction_repository.dart';
 
@@ -21,7 +22,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     //Logic for fetching transactions
     try {
       List<TransactionList> transactions =
-          await transactionRepository.getTransactions('1234509876');
+          await transactionRepository.getTransactions(LocalStorageService.getValue('phone'));
       double cr = 0;
       double dr = 0;
       for (var transaction in transactions) {
@@ -39,7 +40,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           creditBalance: cr,
           debitBalance: dr));
     } catch (e) {
-      print(e.toString());
       emit(TransactionsFetched(
           transactions: state.transactions,
           isCustomersTabActive: state.isCustomersTabActive,

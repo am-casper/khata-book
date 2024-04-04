@@ -16,3 +16,7 @@ class NavigateToHomeScreen extends AppEvent {
   const NavigateToHomeScreen();
 }
 
+class NavigateToLoginScreen extends AppEvent {
+  const NavigateToLoginScreen();
+}
+

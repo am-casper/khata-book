@@ -17,11 +17,20 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   void _onInitialize(Initialize event, Emitter<AppState> emit) async {
     //Write logic for Authentication
-    String phone = "1234509876";
+    final phone = LocalStorageService.getValue('phone');
+    if (phone == null) {
+      emit(state.copyWith(navigateTo: NavigateTo.showLoginScreen));
+      return;
+    }
+    // final isLoggedIn = LocalStorageService.getValue('phone') ?? false;
+    // if (!isLoggedIn) {
+    //   emit(state.copyWith(navigateTo: NavigateTo.showLoginScreen));
+    //   return;
+    // }
     try {
-      User user = await userRepository.getCurrentUser(phone);
-      LocalStorageService.setValue(key: 'phone', value: phone);
-      LocalStorageService.setValue(key: 'name', value: user.name);
+      // User user = await userRepository.getCurrentUser(phone);
+      // LocalStorageService.setValue(key: 'phone', value: phone);
+      // LocalStorageService.setValue(key: 'name', value: user.name);
       add(const NavigateToHomeScreen());
     } catch (e) {
       emit(AppError(errorMessage: e.toString()));

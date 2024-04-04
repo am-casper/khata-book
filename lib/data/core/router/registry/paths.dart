@@ -10,4 +10,7 @@ class AppPathsRegistry {
   static const String more = 'more';
   static const String requestMoney = 'requestMoney';
   static const String sendMoney = 'sendMoney';
+
+  static const String authWrapper = '/authWrapper';
+  static const String login = 'login';
 }

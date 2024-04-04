@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -42,19 +43,23 @@ class MoneyScreen extends StatelessWidget {
                                 width: 41.toAutoScaledWidth,
                               ),
                               SizedBox(width: 10.toAutoScaledWidth),
-                              Text(
-                                "Hi ${state.name}",
-                                style: GoogleFonts.lexend(
-                                    fontSize: 18.toAutoScaledFont),
+                              SizedBox(
+                                width: 100.toAutoScaledWidth,
+                                child: Text(
+                                  "Hi ${state.name}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.lexend(
+                                      fontSize: 18.toAutoScaledFont),
+                                ),
                               ),
-                              // SizedBox(width: 6.toAutoScaledWidth),
-                              IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () {
-                                    //logic for changing account
-                                  },
-                                  icon: SvgPicture.asset(
-                                      'assets/icons/money/down_arrow.svg')),
+                              SizedBox(width: 6.toAutoScaledWidth),
+                              GestureDetector(
+                                onTap: () {
+                                  //logic for changing account
+                                },
+                                child: SvgPicture.asset(
+                                    'assets/icons/money/down_arrow.svg'),
+                              ),
                             ],
                           ),
                           Row(
@@ -68,11 +73,16 @@ class MoneyScreen extends StatelessWidget {
                                 icon: SvgPicture.asset(
                                     'assets/icons/money/add_person.svg'),
                               ),
-                              Text(
-                                "Add Staff",
-                                style: GoogleFonts.lexend(
-                                    fontSize: 18.toAutoScaledFont,
-                                    color: const Color(0xff388B40)),
+                              SizedBox(
+                                width: 84.toAutoScaledWidth,
+                                child: AutoSizeText(
+                                  "Add Staff",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.lexend(
+                                      fontSize: 18.toAutoScaledFont,
+                                      color: const Color(0xff388B40)),
+                                ),
                               ),
                               SizedBox(width: 10.toAutoScaledWidth),
                               IconButton(
@@ -107,36 +117,49 @@ class MoneyScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "My Balance",
-                                  style: GoogleFonts.lexend(
-                                      fontSize: 16.toAutoScaledFont,
-                                      color: Colors.white),
-                                ),
-                                Text('₹ ${state.balance}',
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "My Balance",
+                                    style: GoogleFonts.lexend(
+                                        fontSize: 16.toAutoScaledFont,
+                                        color: Colors.white),
+                                  ),
+                                  AutoSizeText(
+                                    '₹ ${state.balance}',
                                     style: GoogleFonts.anekLatin(
                                       fontSize: 57.27.toAutoScaledFont,
                                       color: Colors.white,
-                                    )),
-                              ],
+                                    ),
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/money/qr.svg',
-                                ),
-                                SizedBox(height: 3.toAutoScaledHeight),
-                                Text(
-                                  "View Transactions",
-                                  style: GoogleFonts.lexend(
-                                      fontSize: 14.toAutoScaledFont,
-                                      color: Colors.white),
-                                ),
-                              ],
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/money/qr.svg',
+                                    height: 56.toAutoScaledWidth,
+                                    width: 56.toAutoScaledWidth,
+                                  ),
+                                  SizedBox(height: 3.toAutoScaledHeight),
+                                  AutoSizeText(
+                                    "View Transactions",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.lexend(
+                                        fontSize: 14.toAutoScaledFont,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -149,8 +172,6 @@ class MoneyScreen extends StatelessWidget {
                             flex: 1,
                             child: GestureDetector(
                               onTap: () {
-                                //logic for navigating to request money screen
-                                print("Request Money");
                                 context.router.push(const RequestMoneyRoute());
                               },
                               child: Container(
@@ -177,6 +198,9 @@ class MoneyScreen extends StatelessWidget {
                                       style: GoogleFonts.lexend(
                                           fontSize: 18.toAutoScaledFont,
                                           color: const Color(0xff388B40)),
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 1,
+                                      softWrap: false,
                                     ),
                                   ],
                                 ),
@@ -188,8 +212,6 @@ class MoneyScreen extends StatelessWidget {
                             flex: 1,
                             child: GestureDetector(
                               onTap: () {
-                                //logic for navigating to send money screen
-                                print("Send Money");
                                 context.router.push(const SendMoneyRoute());
                               },
                               child: Container(
@@ -214,8 +236,12 @@ class MoneyScreen extends StatelessWidget {
                                     Text(
                                       "Send Money",
                                       style: GoogleFonts.lexend(
-                                          fontSize: 18.toAutoScaledFont,
-                                          color: const Color(0xff388B40)),
+                                        fontSize: 18.toAutoScaledFont,
+                                        color: const Color(0xff388B40),
+                                      ),
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 1,
+                                      softWrap: false,
                                     ),
                                   ],
                                 ),
@@ -245,19 +271,29 @@ class MoneyScreen extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Collect Pending Money",
-                                  style: GoogleFonts.lexend(
-                                      fontSize: 18.toAutoScaledFont,
-                                      color: const Color(0xff388B40)),
+                                SizedBox(
+                                  width: 200.toAutoScaledWidth,
+                                  child: AutoSizeText(
+                                    "Collect Pending Money",
+                                    maxLines: 1,
+                                    minFontSize: 8,
+                                    style: GoogleFonts.lexend(
+                                        fontSize: 18.toAutoScaledFont,
+                                        color: const Color(0xff388B40)),
+                                  ),
                                 ),
                                 SizedBox(height: 5.toAutoScaledHeight),
-                                Text(
-                                  "No Pending Collections",
-                                  style: GoogleFonts.lexend(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 14.toAutoScaledFont,
-                                      color: const Color(0xff388B40)),
+                                SizedBox(
+                                  width: 160.toAutoScaledWidth,
+                                  child: AutoSizeText(
+                                    "No Pending Collections",
+                                    maxLines: 1,
+                                    minFontSize: 8,
+                                    style: GoogleFonts.lexend(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 14.toAutoScaledFont,
+                                        color: const Color(0xff388B40)),
+                                  ),
                                 ),
                               ],
                             )

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:khata_book/data/services/local/local_storage_service.dart';
 import 'package:khata_book/domain/models/user/user.dart';
 import 'package:khata_book/domain/repositories/user_repository.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +18,7 @@ class MoneyBloc extends Bloc<MoneyEvent, MoneyState> {
   void _onFetchMoney(FetchMoney event, Emitter<MoneyState> emit) async {
     emit(MoneyLoading());
     try {
-      User user = await userRepository.getCurrentUser("1234509876");
+      User user = await userRepository.getCurrentUser(LocalStorageService.getValue('phone'));
       double balance = user.balance;
       var formatter = NumberFormat.decimalPattern('en_IN');
       String formatted = formatter.format(balance);

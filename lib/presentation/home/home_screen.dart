@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -153,15 +154,14 @@ class HomeScreen extends StatelessWidget {
                                 style: GoogleFonts.lexend(
                                     fontSize: 18.toAutoScaledFont),
                               ),
-                              // SizedBox(width: 6.toAutoScaledWidth),
-                              IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () {
-                                    print(LocalStorageService.getValue("name"));
-                                    //logic for changing account
-                                  },
-                                  icon: SvgPicture.asset(
-                                      'assets/icons/money/down_arrow.svg')),
+                              SizedBox(width: 6.toAutoScaledWidth),
+                              GestureDetector(
+                                onTap: () {
+                                  //logic for changing account
+                                },
+                                child: SvgPicture.asset(
+                                    'assets/icons/money/down_arrow.svg'),
+                              ),
                             ],
                           ),
                           SvgPicture.asset('assets/icons/home/calender.svg'),
@@ -204,6 +204,8 @@ class HomeScreen extends StatelessWidget {
                             ),
                             Positioned(
                               left: 109,
+                              width: 120,
+                              // height: 32.toAutoScaledHeight,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     elevation: 0,
@@ -223,8 +225,9 @@ class HomeScreen extends StatelessWidget {
                                       const TabSwitched(
                                           isCustomersTabActive: false));
                                 },
-                                child: Text(
+                                child: AutoSizeText(
                                   "Suppliers",
+                                  overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.lexend(
                                     fontSize: 18.toAutoScaledFont,
                                   ),
@@ -267,6 +270,7 @@ class HomeScreen extends StatelessWidget {
                                 },
                                 child: Text(
                                   "Customers",
+                                  overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.lexend(
                                       fontSize: 18.toAutoScaledFont),
                                 ),
@@ -369,43 +373,44 @@ class HomeScreen extends StatelessWidget {
                                         SvgPicture.asset(
                                             'assets/icons/home/whatsapp.svg'),
                                         SizedBox(width: 13.toAutoScaledWidth),
-                                        SizedBox(
-                                          width: 70.toAutoScaledWidth,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                "₹ ${state.transactions[index].transactionAmount.abs().toStringAsFixed(2)}",
-                                                style: GoogleFonts.lexendDeca(
-                                                    fontSize:
-                                                        16.toAutoScaledFont,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: state
-                                                                .transactions[
-                                                                    index]
-                                                                .transactionAmount >
-                                                            0
-                                                        ? const Color(
-                                                            0xff72CC00)
-                                                        : const Color(
-                                                            0xFFFF2B2B)),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            AutoSizeText(
+                                              "₹ ${state.transactions[index].transactionAmount.abs().toStringAsFixed(2)}",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.lexendDeca(
+                                                  fontSize:
+                                                      16.toAutoScaledFont,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: state
+                                                              .transactions[
+                                                                  index]
+                                                              .transactionAmount >
+                                                          0
+                                                      ? const Color(
+                                                          0xff72CC00)
+                                                      : const Color(
+                                                          0xFFFF2B2B)),
+                                            ),
+                                            AutoSizeText(
+                                              state.transactions[index]
+                                                          .transactionAmount >
+                                                      0
+                                                  ? "You'll Get"
+                                                  : "You'll Give",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.lexendDeca(
+                                                fontSize: 14.toAutoScaledFont,
+                                                fontWeight: FontWeight.w300,
+                                                color:
+                                                    const Color(0xff8C8C8C),
                                               ),
-                                              Text(
-                                                state.transactions[index]
-                                                            .transactionAmount >
-                                                        0
-                                                    ? "You'll Get"
-                                                    : "You'll Give",
-                                                style: GoogleFonts.lexendDeca(
-                                                  fontSize: 14.toAutoScaledFont,
-                                                  fontWeight: FontWeight.w300,
-                                                  color:
-                                                      const Color(0xff8C8C8C),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),

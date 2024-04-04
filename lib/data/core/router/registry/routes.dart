@@ -38,5 +38,16 @@ class AppRoutesRegistry {
         ),
       ],
     ),
+    CustomRoute(
+      path: AppPathsRegistry.authWrapper,
+      page: AuthWrapper.page,
+      children: [
+        CustomRoute(
+          initial: true,
+          path: AppPathsRegistry.login,
+          page: LoginRoute.page,
+        ),
+      ],
+    ),
   ];
 }

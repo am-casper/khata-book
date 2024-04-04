@@ -31,15 +31,15 @@ class SendMoneyScreen extends StatelessWidget {
                   body: Column(
                     children: [
                       TextField(
-                        controller: amountController,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter amount',
-                        ),
-                      ),
-                      TextField(
                         controller: phoneController,
                         decoration: const InputDecoration(
                           hintText: 'Enter phone number of receiver',
+                        ),
+                      ),
+                      TextField(
+                        controller: amountController,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter amount',
                         ),
                       ),
                       ElevatedButton(

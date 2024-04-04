@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:khata_book/data/core/router/intrinsic_router.gr.dart';
 import 'package:khata_book/domain/repositories/transaction_repository.dart';
 import 'package:khata_book/presentation/request_money/bloc/request_money_bloc.dart';
 
@@ -30,15 +31,15 @@ class RequestMoneyScreen extends StatelessWidget {
                   body: Column(
                     children: [
                       TextField(
-                        controller: amountController,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter amount',
-                        ),
-                      ),
-                      TextField(
                         controller: phoneController,
                         decoration: const InputDecoration(
                           hintText: 'Enter phone number of sender',
+                        ),
+                      ),
+                      TextField(
+                        controller: amountController,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter amount',
                         ),
                       ),
                       ElevatedButton(
@@ -64,7 +65,7 @@ class RequestMoneyScreen extends StatelessWidget {
                   backgroundColor: Colors.green,
                 ),
               );
-              context.router.maybePop();
+              context.router.pushAndPopUntil(const MoneyRoute(), predicate: ModalRoute.withName(MoneyRoute.name));
             } else if (state is RequestMoneyError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(

@@ -19,7 +19,7 @@ abstract class ApiService {
   );
 
   @POST(ApiEndpoints.signUp)
-  Future<User> signUpUser(
+  Future<void> signUpUser(
     @Body() User user,
   );
 

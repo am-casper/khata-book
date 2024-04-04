@@ -39,6 +39,8 @@ class _KhataBookAppState extends State<KhataBookApp> {
       switch (state.navigateTo) {
         case NavigateTo.showHomeScreen:
           return [const HomeWrapper()];
+        case NavigateTo.showLoginScreen:
+          return [const AuthWrapper()];
         default:
           return [];
       }

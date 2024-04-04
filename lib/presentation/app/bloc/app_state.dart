@@ -3,6 +3,7 @@ part of 'app_bloc.dart';
 enum NavigateTo {
   inital,
   showHomeScreen,
+  showLoginScreen,
 }
 
 class AppState {
