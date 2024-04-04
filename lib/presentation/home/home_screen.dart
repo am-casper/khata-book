@@ -4,13 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:khata_book/data/core/theme/dimensional/dimensional.dart';
+import 'package:khata_book/data/services/local/local_storage_service.dart';
 import 'package:khata_book/presentation/home/bloc/home_bloc.dart';
 
 @RoutePage()
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  Widget custSuppl(bool isCustomersTabActive) {
+  Widget custSuppl(
+      bool isCustomersTabActive, double creditBalance, double debitBalance) {
+    double totalBalance = creditBalance + debitBalance;
     if (isCustomersTabActive) {
       return Column(
         children: [
@@ -26,7 +29,7 @@ class HomeScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "₹ 380",
+                    "₹ ${debitBalance.abs().toStringAsFixed(2)}",
                     style: GoogleFonts.anekLatin(
                         fontSize: 30.toAutoScaledFont,
                         fontWeight: FontWeight.w600,
@@ -43,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "₹ 1180",
+                    "₹ ${creditBalance.toStringAsFixed(2)}",
                     style: GoogleFonts.anekLatin(
                         fontSize: 30.toAutoScaledFont,
                         fontWeight: FontWeight.w600,
@@ -54,7 +57,7 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           Text(
-            "A total of ₹ 800 will be recieved.",
+            "A total of ₹ ${totalBalance.toStringAsFixed(2)} ${totalBalance > 0 ? "will be recieved" : "has to be given"}.",
             style: GoogleFonts.anekLatin(
               fontSize: 14.toAutoScaledFont,
               fontWeight: FontWeight.normal,
@@ -146,7 +149,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                               SizedBox(width: 10.toAutoScaledWidth),
                               Text(
-                                "Hi Yashpal",
+                                "Hi ${LocalStorageService.getValue("name")}",
                                 style: GoogleFonts.lexend(
                                     fontSize: 18.toAutoScaledFont),
                               ),
@@ -154,6 +157,7 @@ class HomeScreen extends StatelessWidget {
                               IconButton(
                                   padding: EdgeInsets.zero,
                                   onPressed: () {
+                                    print(LocalStorageService.getValue("name"));
                                     //logic for changing account
                                   },
                                   icon: SvgPicture.asset(
@@ -169,7 +173,6 @@ class HomeScreen extends StatelessWidget {
                         height: 290.toAutoScaledHeight,
                         child: Stack(
                           children: [
-                            
                             Positioned(
                               top: 44,
                               width: 390.toAutoScaledWidth,
@@ -194,7 +197,8 @@ class HomeScreen extends StatelessWidget {
                                     10.toAutoScaledWidth,
                                     14.toAutoScaledHeight),
                                 child: Center(
-                                  child: custSuppl(state.isCustomersTabActive),
+                                  child: custSuppl(state.isCustomersTabActive,
+                                      state.creditBalance, state.debitBalance),
                                 ),
                               ),
                             ),
@@ -215,7 +219,9 @@ class HomeScreen extends StatelessWidget {
                                         ? Colors.white
                                         : Colors.black),
                                 onPressed: () {
-                                  context.read<HomeBloc>().add(const TabSwitched(isCustomersTabActive: false));
+                                  context.read<HomeBloc>().add(
+                                      const TabSwitched(
+                                          isCustomersTabActive: false));
                                 },
                                 child: Text(
                                   "Suppliers",
@@ -255,7 +261,9 @@ class HomeScreen extends StatelessWidget {
                                         ? Colors.black
                                         : Colors.white),
                                 onPressed: () {
-                                  context.read<HomeBloc>().add(const TabSwitched(isCustomersTabActive: true));
+                                  context.read<HomeBloc>().add(
+                                      const TabSwitched(
+                                          isCustomersTabActive: true));
                                 },
                                 child: Text(
                                   "Customers",
@@ -272,7 +280,6 @@ class HomeScreen extends StatelessWidget {
                                 height: 40,
                               ),
                             ),
-                            
                           ],
                         ),
                       ),
@@ -317,7 +324,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 17.toAutoScaledHeight),
                       SizedBox(
-                        height: 400.toAutoScaledHeight,
+                        height: 350.toAutoScaledHeight,
                         child: ListView.builder(
                           itemCount: state.transactions.length,
                           itemBuilder: (context, index) {
@@ -339,13 +346,14 @@ class HomeScreen extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              state.transactions[index]['name'],
+                                              state.transactions[index].user,
                                               style: GoogleFonts.lexendDeca(
                                                   fontSize: 16.toAutoScaledFont,
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              state.transactions[index]['date'],
+                                              state.transactions[index]
+                                                  .transactionDate,
                                               style: GoogleFonts.lexendDeca(
                                                   fontSize: 14.toAutoScaledFont,
                                                   fontWeight: FontWeight.w300,
@@ -368,14 +376,15 @@ class HomeScreen extends StatelessWidget {
                                                 CrossAxisAlignment.end,
                                             children: [
                                               Text(
-                                                "₹ ${state.transactions[index]['amount'].abs()}",
+                                                "₹ ${state.transactions[index].transactionAmount.abs().toStringAsFixed(2)}",
                                                 style: GoogleFonts.lexendDeca(
                                                     fontSize:
                                                         16.toAutoScaledFont,
                                                     fontWeight: FontWeight.w500,
-                                                    color: state.transactions[
+                                                    color: state
+                                                                .transactions[
                                                                     index]
-                                                                ['amount'] >
+                                                                .transactionAmount >
                                                             0
                                                         ? const Color(
                                                             0xff72CC00)
@@ -384,7 +393,7 @@ class HomeScreen extends StatelessWidget {
                                               ),
                                               Text(
                                                 state.transactions[index]
-                                                            ['amount'] >
+                                                            .transactionAmount >
                                                         0
                                                     ? "You'll Get"
                                                     : "You'll Give",

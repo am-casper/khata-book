@@ -14,11 +14,11 @@ class AppRoutesRegistry {
           page: BottomNavBar.page,
           children: [
             CustomRoute(
-              initial: true,
               path: AppPathsRegistry.home,
               page: HomeRoute.page,
             ),
             CustomRoute(
+              initial: true,
               path: AppPathsRegistry.money,
               page: MoneyRoute.page,
             ),
@@ -27,6 +27,14 @@ class AppRoutesRegistry {
               page: MoreRoute.page,
             ),
           ],
+        ),
+        CustomRoute(
+          path: AppPathsRegistry.requestMoney,
+          page: RequestMoneyRoute.page,
+        ),
+        CustomRoute(
+          path: AppPathsRegistry.sendMoney,
+          page: SendMoneyRoute.page,
         ),
       ],
     ),

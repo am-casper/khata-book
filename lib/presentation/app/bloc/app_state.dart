@@ -19,3 +19,9 @@ class AppState {
 
   factory AppState.initial() => AppState(navigateTo: NavigateTo.inital);
 }
+
+class AppError extends AppState {
+  final String errorMessage;
+
+  AppError({required this.errorMessage}) : super(navigateTo: NavigateTo.inital);
+}

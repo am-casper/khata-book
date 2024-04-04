@@ -8,4 +8,6 @@ class AppPathsRegistry {
   static const String home = 'home';
   static const String money = 'money';
   static const String more = 'more';
+  static const String requestMoney = 'requestMoney';
+  static const String sendMoney = 'sendMoney';
 }

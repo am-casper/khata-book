@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:khata_book/data/core/router/intrinsic_router.gr.dart';
 import 'package:khata_book/data/core/theme/dimensional/dimensional.dart';
 import 'package:khata_book/presentation/money/bloc/money_bloc.dart';
 
@@ -42,7 +43,7 @@ class MoneyScreen extends StatelessWidget {
                               ),
                               SizedBox(width: 10.toAutoScaledWidth),
                               Text(
-                                "Hi Yashpal",
+                                "Hi ${state.name}",
                                 style: GoogleFonts.lexend(
                                     fontSize: 18.toAutoScaledFont),
                               ),
@@ -115,7 +116,7 @@ class MoneyScreen extends StatelessWidget {
                                       fontSize: 16.toAutoScaledFont,
                                       color: Colors.white),
                                 ),
-                                Text('₹ ${state.money}',
+                                Text('₹ ${state.balance}',
                                     style: GoogleFonts.anekLatin(
                                       fontSize: 57.27.toAutoScaledFont,
                                       color: Colors.white,
@@ -144,60 +145,81 @@ class MoneyScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 27.toAutoScaledWidth,
-                                vertical: 11.toAutoScaledHeight),
-                            decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0x1A000000),
-                                    blurRadius: 10,
-                                    offset: Offset(0, 4),
-                                  ),
-                                ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(
-                                    "assets/icons/money/req_money.svg"),
-                                SizedBox(height: 5.toAutoScaledHeight),
-                                Text(
-                                  "Request Money",
-                                  style: GoogleFonts.lexend(
-                                      fontSize: 18.toAutoScaledFont,
-                                      color: const Color(0xff388B40)),
+                          Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                //logic for navigating to request money screen
+                                print("Request Money");
+                                context.router.push(const RequestMoneyRoute());
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 27.toAutoScaledWidth,
+                                    vertical: 11.toAutoScaledHeight),
+                                decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0x1A000000),
+                                        blurRadius: 10,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                        "assets/icons/money/req_money.svg"),
+                                    SizedBox(height: 5.toAutoScaledHeight),
+                                    Text(
+                                      "Request Money",
+                                      style: GoogleFonts.lexend(
+                                          fontSize: 18.toAutoScaledFont,
+                                          color: const Color(0xff388B40)),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 27.toAutoScaledWidth,
-                                vertical: 11.toAutoScaledHeight),
-                            decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0x1A000000),
-                                    blurRadius: 10,
-                                    offset: Offset(0, 4),
-                                  ),
-                                ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(
-                                    "assets/icons/money/rec_money.svg"),
-                                SizedBox(height: 5.toAutoScaledHeight),
-                                Text(
-                                  "Receive Money",
-                                  style: GoogleFonts.lexend(
-                                      fontSize: 18.toAutoScaledFont,
-                                      color: const Color(0xff388B40)),
+                          SizedBox(width: 10.toAutoScaledWidth),
+                          Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              onTap: () {
+                                //logic for navigating to send money screen
+                                print("Send Money");
+                                context.router.push(const SendMoneyRoute());
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 27.toAutoScaledWidth,
+                                    vertical: 11.toAutoScaledHeight),
+                                decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0x1A000000),
+                                        blurRadius: 10,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                        "assets/icons/money/rec_money.svg"),
+                                    SizedBox(height: 5.toAutoScaledHeight),
+                                    Text(
+                                      "Send Money",
+                                      style: GoogleFonts.lexend(
+                                          fontSize: 18.toAutoScaledFont,
+                                          color: const Color(0xff388B40)),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ],
@@ -210,16 +232,15 @@ class MoneyScreen extends StatelessWidget {
                         vertical: 18.toAutoScaledHeight),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          width: 1, color: const Color(0xff388B40)),
+                      border:
+                          Border.all(width: 1, color: const Color(0xff388B40)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
-                            SvgPicture.asset(
-                                "assets/icons/money/contacts.svg"),
+                            SvgPicture.asset("assets/icons/money/contacts.svg"),
                             SizedBox(width: 10.toAutoScaledWidth),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,7 +264,7 @@ class MoneyScreen extends StatelessWidget {
                           ],
                         ),
                         const Icon(Icons.arrow_forward_ios,
-                            color:  Color(0xff388B40))
+                            color: Color(0xff388B40))
                       ],
                     ),
                   )
@@ -251,11 +272,12 @@ class MoneyScreen extends StatelessWidget {
               ),
             ),
           );
-        } else {
+        } else if (state is MoneyFetchFailed) {
           return const Center(
             child: Text("Error"),
           );
         }
+        return const SizedBox();
       },
       listener: (BuildContext context, MoneyState state) {
         //listener if any error occurs

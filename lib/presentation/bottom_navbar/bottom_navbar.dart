@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:khata_book/data/core/router/intrinsic_router.dart';
 import 'package:khata_book/data/core/router/intrinsic_router.gr.dart';
+import 'package:khata_book/domain/repositories/transaction_repository.dart';
+import 'package:khata_book/domain/repositories/user_repository.dart';
 import 'package:khata_book/presentation/home/bloc/home_bloc.dart';
 import 'package:khata_book/presentation/money/bloc/money_bloc.dart';
 import 'package:khata_book/presentation/more/bloc/more_bloc.dart';
@@ -27,10 +29,10 @@ class BottomNavBar extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => HomeBloc()..add(FetchTransactions()),
+          create: (context) => HomeBloc(transactionRepository: context.read<TransactionRepository>())..add(FetchTransactions()),
         ),
         BlocProvider(
-          create: (context) => MoneyBloc()..add(FetchMoney()),
+          create: (context) => MoneyBloc(userRepository: context.read<UserRepository>())..add(FetchMoney()),
         ),
         BlocProvider(
           create: (context) => MoreBloc(),
