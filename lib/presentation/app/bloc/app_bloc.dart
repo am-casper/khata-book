@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:khata_book/data/services/local/local_storage_service.dart';
 import 'package:khata_book/domain/repositories/user_repository.dart';
@@ -12,13 +14,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc({required this.userRepository}) : super(AppState.initial()) {
     on<Initialize>(_onInitialize);
     on<NavigateToHomeScreen>(_onNavigateToHomeScreen);
+    on<NavigateToLoginScreen>(_onNavigateToLoginScreen);
+    on<Logout>(_onLogout);
   }
 
   void _onInitialize(Initialize event, Emitter<AppState> emit) async {
     //Write logic for Authentication
     final phone = LocalStorageService.getValue('phone');
     if (phone == null) {
-      emit(state.copyWith(navigateTo: NavigateTo.showLoginScreen));
+      add(const NavigateToLoginScreen());
       return;
     }
     try {
@@ -31,5 +35,14 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   void _onNavigateToHomeScreen(
       NavigateToHomeScreen event, Emitter<AppState> emit) {
     emit(state.copyWith(navigateTo: NavigateTo.showHomeScreen));
+  }
+
+  FutureOr<void> _onNavigateToLoginScreen(NavigateToLoginScreen event, Emitter<AppState> emit) {
+    emit(state.copyWith(navigateTo: NavigateTo.showLoginScreen));
+  }
+
+  FutureOr<void> _onLogout(Logout event, Emitter<AppState> emit) {
+    LocalStorageService.setValue(key: 'phone', value: null);
+    emit(state.copyWith(navigateTo: NavigateTo.showLoginScreen));
   }
 }

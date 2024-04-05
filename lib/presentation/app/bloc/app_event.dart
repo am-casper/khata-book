@@ -20,3 +20,7 @@ class NavigateToLoginScreen extends AppEvent {
   const NavigateToLoginScreen();
 }
 
+class Logout extends AppEvent {
+  const Logout();
+}
+
