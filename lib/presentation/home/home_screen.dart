@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,46 +20,53 @@ class HomeScreen extends StatelessWidget {
       return Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                children: [
-                  Text(
-                    "You'll Give",
-                    style: GoogleFonts.lexend(
-                        fontSize: 16.toAutoScaledFont,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "₹ ${debitBalance.abs().toStringAsFixed(2)}",
-                    style: GoogleFonts.anekLatin(
-                        fontSize: 30.toAutoScaledFont,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xff8C8C8C)),
-                  ),
-                ],
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "You'll Give",
+                      style: GoogleFonts.lexend(
+                          fontSize: 16.toAutoScaledFont,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "₹ ${debitBalance.abs().toStringAsFixed(2)}",
+                      style: GoogleFonts.anekLatin(
+                          fontSize: 30.toAutoScaledFont,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff8C8C8C)),
+                    ),
+                  ],
+                ),
               ),
-              Column(
-                children: [
-                  Text(
-                    "You'll Recieve",
-                    style: GoogleFonts.lexend(
-                        fontSize: 16.toAutoScaledFont,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "₹ ${creditBalance.toStringAsFixed(2)}",
-                    style: GoogleFonts.anekLatin(
-                        fontSize: 30.toAutoScaledFont,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xff72CC00)),
-                  ),
-                ],
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text(
+                      "You'll Recieve",
+                      style: GoogleFonts.lexend(
+                          fontSize: 16.toAutoScaledFont,
+                          fontWeight: FontWeight.bold),
+                    ),
+                   Text(
+                      "₹ ${creditBalance.toStringAsFixed(2)}",
+                      style: GoogleFonts.anekLatin(
+                          fontSize: 30.toAutoScaledFont,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff72CC00)),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-          Text(
+          AutoSizeText(
             "A total of ₹ ${totalBalance.toStringAsFixed(2)} ${totalBalance > 0 ? "will be recieved" : "has to be given"}.",
+            maxFontSize: 12,
             style: GoogleFonts.anekLatin(
               fontSize: 14.toAutoScaledFont,
               fontWeight: FontWeight.normal,
@@ -75,7 +83,7 @@ class HomeScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+               Text(
                   "View Report",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.lexend(
@@ -90,7 +98,7 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 15.toAutoScaledHeight),
+          SizedBox(height: 10.toAutoScaledHeight),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -170,7 +178,7 @@ class HomeScreen extends StatelessWidget {
                       SizedBox(height: 10.toAutoScaledHeight),
                       SizedBox(
                         width: double.infinity,
-                        height: 290.toAutoScaledHeight,
+                        height: MediaQuery.of(context).size.height * 0.32,
                         child: Stack(
                           children: [
                             Positioned(
@@ -227,6 +235,8 @@ class HomeScreen extends StatelessWidget {
                                 },
                                 child: AutoSizeText(
                                   "Suppliers",
+                                  maxLines: 1,
+                                  minFontSize: 8,
                                   overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.lexend(
                                     fontSize: 18.toAutoScaledFont,
@@ -268,8 +278,10 @@ class HomeScreen extends StatelessWidget {
                                       const TabSwitched(
                                           isCustomersTabActive: true));
                                 },
-                                child: Text(
+                                child: AutoSizeText(
                                   "Customers",
+                                  maxLines: 1,
+                                  minFontSize: 8,
                                   overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.lexend(
                                       fontSize: 18.toAutoScaledFont),
@@ -345,26 +357,35 @@ class HomeScreen extends StatelessWidget {
                                             height: 48.toAutoScaledHeight,
                                             width: 48.toAutoScaledWidth),
                                         SizedBox(width: 15.toAutoScaledWidth),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              state.transactions[index].user,
-                                              style: GoogleFonts.lexendDeca(
-                                                  fontSize: 16.toAutoScaledFont,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              state.transactions[index]
-                                                  .transactionDate,
-                                              style: GoogleFonts.lexendDeca(
-                                                  fontSize: 14.toAutoScaledFont,
-                                                  fontWeight: FontWeight.w300,
-                                                  color:
-                                                      const Color(0xff8C8C8C)),
-                                            ),
-                                          ],
+                                        Container(
+                                          constraints: BoxConstraints(
+                                              maxWidth: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.35),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                state.transactions[index].user,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.lexendDeca(
+                                                    fontSize: 16.toAutoScaledFont,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                              Text(
+                                                state.transactions[index]
+                                                    .transactionDate,
+                                                style: GoogleFonts.lexendDeca(
+                                                    fontSize: 14.toAutoScaledFont,
+                                                    fontWeight: FontWeight.w300,
+                                                    color:
+                                                        const Color(0xff8C8C8C)),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -380,18 +401,17 @@ class HomeScreen extends StatelessWidget {
                                             AutoSizeText(
                                               "₹ ${state.transactions[index].transactionAmount.abs().toStringAsFixed(2)}",
                                               maxLines: 1,
+                                              minFontSize: 8,
                                               overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.lexendDeca(
-                                                  fontSize:
-                                                      16.toAutoScaledFont,
+                                                  fontSize: 16.toAutoScaledFont,
                                                   fontWeight: FontWeight.w500,
                                                   color: state
                                                               .transactions[
                                                                   index]
                                                               .transactionAmount >
                                                           0
-                                                      ? const Color(
-                                                          0xff72CC00)
+                                                      ? const Color(0xff72CC00)
                                                       : const Color(
                                                           0xFFFF2B2B)),
                                             ),
@@ -406,8 +426,7 @@ class HomeScreen extends StatelessWidget {
                                               style: GoogleFonts.lexendDeca(
                                                 fontSize: 14.toAutoScaledFont,
                                                 fontWeight: FontWeight.w300,
-                                                color:
-                                                    const Color(0xff8C8C8C),
+                                                color: const Color(0xff8C8C8C),
                                               ),
                                             ),
                                           ],

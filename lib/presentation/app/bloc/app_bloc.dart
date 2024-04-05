@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:khata_book/data/services/local/local_storage_service.dart';
-import 'package:khata_book/domain/models/user/user.dart';
 import 'package:khata_book/domain/repositories/user_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
@@ -22,15 +21,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       emit(state.copyWith(navigateTo: NavigateTo.showLoginScreen));
       return;
     }
-    // final isLoggedIn = LocalStorageService.getValue('phone') ?? false;
-    // if (!isLoggedIn) {
-    //   emit(state.copyWith(navigateTo: NavigateTo.showLoginScreen));
-    //   return;
-    // }
     try {
-      // User user = await userRepository.getCurrentUser(phone);
-      // LocalStorageService.setValue(key: 'phone', value: phone);
-      // LocalStorageService.setValue(key: 'name', value: user.name);
       add(const NavigateToHomeScreen());
     } catch (e) {
       emit(AppError(errorMessage: e.toString()));

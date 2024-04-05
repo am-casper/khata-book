@@ -49,27 +49,29 @@ class _KhataBookAppState extends State<KhataBookApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider<UserRepository>(
-          create: (context) => UserRepository(apiService),
-        ),
-        RepositoryProvider<TransactionRepository>(
-          create: (context) => TransactionRepository(apiService),
-        ),
-      ],
-      child: BlocProvider(
-        create: (context) => AppBloc(userRepository: context.read<UserRepository>())..add(const Initialize()),
-        child: BlocBuilder<AppBloc, AppState>(
-          builder: (BuildContext context, AppState state) {
-            return MaterialApp.router(
-                debugShowCheckedModeBanner: false,
-                title: "Khata Book",
-                routerDelegate: _getDelegate(state),
-                routeInformationParser: BaseApp.router.defaultRouteParser(),
-                // TODO: add theme
-              );
-          },
+    return MediaQuery.withNoTextScaling(
+      child: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<UserRepository>(
+            create: (context) => UserRepository(apiService),
+          ),
+          RepositoryProvider<TransactionRepository>(
+            create: (context) => TransactionRepository(apiService),
+          ),
+        ],
+        child: BlocProvider(
+          create: (context) => AppBloc(userRepository: context.read<UserRepository>())..add(const Initialize()),
+          child: BlocBuilder<AppBloc, AppState>(
+            builder: (BuildContext context, AppState state) {
+              return MaterialApp.router(
+                  debugShowCheckedModeBanner: false,
+                  title: "Khata Book",
+                  routerDelegate: _getDelegate(state),
+                  routeInformationParser: BaseApp.router.defaultRouteParser(),
+                  // TODO: add theme
+                );
+            },
+          ),
         ),
       ),
     );
